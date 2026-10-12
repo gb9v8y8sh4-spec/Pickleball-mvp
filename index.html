@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6d35c9">
+<title>Pickleball MVP v0.1</title>
+<style>
+:root{--p:#6d35c9;--p2:#8a4de8;--bg:#f6f3fb;--card:#fff;--text:#1f1b27;--muted:#77717f;--line:#e9e3f1;--green:#19a66a}
+*{box-sizing:border-box}body{margin:0;background:#ddd;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text)}
+.app{max-width:430px;min-height:100vh;margin:auto;background:var(--bg);position:relative;padding-bottom:78px}
+.top{padding:18px 18px 8px;background:#fff;position:sticky;top:0;z-index:5;border-bottom:1px solid var(--line)}
+.brand{font-weight:800;color:var(--p);font-size:19px}.screen{display:none;padding:16px}.screen.active{display:block}
+h1{font-size:26px;margin:5px 0 4px}h2{font-size:19px;margin:20px 0 10px}.muted{color:var(--muted);font-size:13px}
+.hero{background:linear-gradient(135deg,#6731c3,#9250eb);color:white;border-radius:20px;padding:20px;margin:8px 0 16px;box-shadow:0 8px 24px #6d35c933}
+.rating{font-size:38px;font-weight:800;margin:5px 0}.pill{display:inline-block;background:#eee5ff;color:var(--p);padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{border:0;border-radius:12px;padding:12px 14px;background:var(--p);color:#fff;font-weight:700;width:100%;font-size:14px}.btn.alt{background:#eee6fb;color:var(--p)}.btn.small{width:auto;padding:9px 11px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:430px;width:100%;height:70px;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:10}
+.nav{border:0;background:white;color:#8b8491;font-size:11px}.nav.active{color:var(--p);font-weight:800}.nav b{display:block;font-size:20px;margin-bottom:3px}
+.event-img{height:105px;border-radius:13px;background:linear-gradient(135deg,#2c9a7b,#7dd2bd);display:flex;align-items:center;justify-content:center;color:#fff;font-size:42px;margin-bottom:10px}
+.input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;margin:5px 0 10px;font-size:14px}
+.person{display:flex;align-items:center;gap:10px}.avatar{width:42px;height:42px;border-radius:50%;background:#eadfff;color:var(--p);display:flex;align-items:center;justify-content:center;font-weight:800}
+.tab{display:flex;gap:8px;overflow:auto;margin:8px 0}.tab button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px}.tab button.active{background:var(--p);color:#fff}
+.back{border:0;background:none;font-size:15px;color:var(--p);padding:0;margin-bottom:8px}.hidden{display:none!important}
+.notice{background:#fff7dd;border:1px solid #f1dda0;border-radius:12px;padding:12px;font-size:13px}
+.success{background:#e9f9f1;border:1px solid #bfead5;color:#167b50;border-radius:12px;padding:12px;font-size:13px}
+</style>
+<link rel="manifest" href="manifest.json"></head>
+<body>
+<div class="app">
+  <div class="top"><div class="brand">🏓 PICKLEBALL</div></div>
+
+  <section id="home" class="screen active">
+    <p class="muted">Xin chào,</p><h1>Nguyễn Văn A</h1>
+    <div class="hero"><div class="muted" style="color:#eadfff">RATING HIỆN TẠI</div><div class="rating">1.247 <span style="font-size:14px;background:#38c987;padding:6px 8px;border-radius:8px">+18</span></div><div style="font-size:12px">Sau giải gần nhất</div></div>
+    <div class="grid">
+      <button class="card" onclick="go('events')" style="border:0;text-align:left">🏆<br><b>Giải đấu</b><br><span class="muted">12 giải</span></button>
+      <button class="card" onclick="go('partners')" style="border:0;text-align:left">👥<br><b>Tìm đồng đội</b><br><span class="muted">8 phù hợp</span></button>
+      <button class="card" onclick="go('schedule')" style="border:0;text-align:left">📅<br><b>Lịch thi đấu</b><br><span class="muted">2 trận</span></button>
+      <button class="card" onclick="go('rating')" style="border:0;text-align:left">📊<br><b>Rating</b><br><span class="muted">Xem lịch sử</span></button>
+    </div>
+    <h2>Giải đấu gần bạn</h2>
+    <div class="card" onclick="go('event')"><div class="event-img">🏓</div><div class="row"><b>Saigon Amateur Open 2027</b><span class="pill">Đang mở</span></div><p class="muted">Đôi nam · 25/11/2027 · TP. Hồ Chí Minh</p><button class="btn">Xem giải đấu</button></div>
+  </section>
+
+  <section id="events" class="screen">
+    <button class="back" onclick="go('home')">‹ Trang chủ</button><h1>Giải đấu</h1>
+    <input class="input" placeholder="🔎 Tìm kiếm giải đấu..." oninput="filterEvents(this.value)">
+    <div class="tab"><button class="active">Tất cả</button><button>Đôi nam</button><button>Đôi nữ</button><button>Đôi nam nữ</button></div>
+    <div id="eventList">
+      <div class="card eventItem" data-name="saigon amateur open"><div class="row"><b>Saigon Amateur Open 2027</b><span class="pill">Đang mở</span></div><p class="muted">Đôi nam · 25/11/2027 · 32 đội · Rating 1.000–1.350</p><button class="btn" onclick="go('event')">Xem chi tiết</button></div>
+      <div class="card eventItem" data-name="vung tau pickleball cup"><div class="row"><b>Vũng Tàu Pickleball Cup</b><span class="pill">Đang mở</span></div><p class="muted">Đôi nam nữ · 10/12/2027 · 24 đội</p><button class="btn alt" onclick="go('event')">Xem chi tiết</button></div>
+      <div class="card eventItem" data-name="ha noi open"><div class="row"><b>Hà Nội Open</b><span class="pill">Sắp mở</span></div><p class="muted">Đôi nữ · 15/12/2027 · 16 đội</p></div>
+    </div>
+  </section>
+
+  <section id="event" class="screen">
+    <button class="back" onclick="go('events')">‹ Giải đấu</button><div class="event-img">🏓</div>
+    <h1>Saigon Amateur Open 2027</h1><span class="pill">Đôi nam</span>
+    <div class="card"><div class="row"><b>25/11/2027</b><span>📍 TP. Hồ Chí Minh</span></div><hr style="border:0;border-top:1px solid var(--line)"><div class="row"><span>32 đội</span><span>Rating 1.000–1.350</span><span>10 Pi/đội</span></div></div>
+    <h2>Thông tin giải</h2><p class="muted">Giải đấu phong trào dành cho cộng đồng pickleball, hướng tới sân chơi công bằng, minh bạch và văn hóa thi đấu tích cực.</p>
+    <div class="card"><b>Luật & điều kiện</b><p class="muted">Thể thức, cách tính điểm, điều kiện rating, chính sách hủy và hoàn phí phải được công bố trước khi đăng ký.</p></div>
+    <button class="btn" onclick="go('register')">Đăng ký tham gia</button>
+  </section>
+
+  <section id="register" class="screen">
+    <button class="back" onclick="go('event')">‹ Chi tiết giải</button><h1>Đăng ký giải</h1><p class="muted">Bước 1/3 · Chọn hình thức đăng ký</p>
+    <div class="card"><label><input type="radio" name="partner" checked> Tôi đã có đồng đội<br><span class="muted">Chọn đồng đội bằng Player ID</span></label></div>
+    <div class="card"><label><input type="radio" name="partner"> Tôi chưa có đồng đội<br><span class="muted">Đăng vào danh sách tìm đồng đội</span></label></div>
+    <div class="card"><label><input type="radio" name="partner"> Nhờ hệ thống hỗ trợ ghép<br><span class="muted">Hệ thống/BTC hỗ trợ tìm người phù hợp</span></label></div>
+    <button class="btn" onclick="go('partners')">Tiếp tục</button>
+  </section>
+
+  <section id="partners" class="screen">
+    <button class="back" onclick="go('home')">‹ Quay lại</button><h1>Tìm đồng đội</h1><input class="input" placeholder="🔎 Tìm người chơi...">
+    <div class="card"><div class="person"><div class="avatar">B</div><div style="flex:1"><b>Trần Văn B</b><div class="muted">Rating 1.235 · TP.HCM</div></div><span class="pill">92%</span></div><button class="btn small" style="margin-top:10px" onclick="invite(this)">Gửi lời mời</button></div>
+    <div class="card"><div class="person"><div class="avatar">C</div><div style="flex:1"><b>Lê Minh C</b><div class="muted">Rating 1.210 · Bình Dương</div></div><span class="pill">88%</span></div><button class="btn small" style="margin-top:10px" onclick="invite(this)">Gửi lời mời</button></div>
+    <div class="card"><div class="person"><div class="avatar">D</div><div style="flex:1"><b>Phạm Hoàng D</b><div class="muted">Rating 1.198 · Đồng Nai</div></div><span class="pill">85%</span></div><button class="btn small" style="margin-top:10px" onclick="invite(this)">Gửi lời mời</button></div>
+  </section>
+
+  <section id="schedule" class="screen">
+    <button class="back" onclick="go('home')">‹ Trang chủ</button><h1>Lịch thi đấu</h1>
+    <div class="tab"><button class="active">Theo ngày</button><button>Theo bảng</button></div>
+    <div class="card"><div class="row"><b>Sân 1 · 09:00</b><span class="pill">Vòng bảng</span></div><p><b>Team 018</b><br>Nguyễn Văn A + Trần Văn B<br><span class="muted">vs</span><br><b>Team 023</b><br>Lê Minh C + Phạm Hoàng D</p><button class="btn" onclick="go('score')">Nhập kết quả</button></div>
+    <div class="card"><div class="row"><b>Sân 1 · 09:20</b><span class="pill">Vòng bảng</span></div><p><b>Team 011</b> vs <b>Team 027</b></p></div>
+  </section>
+
+  <section id="score" class="screen">
+    <button class="back" onclick="go('schedule')">‹ Lịch thi đấu</button><h1>Nhập kết quả</h1><p class="muted">Vòng bảng · Bảng A · Sân 1 · 09:00</p>
+    <div class="card"><div class="row"><b>Team 018</b><b>Team 023</b></div><div class="row" style="margin-top:15px"><input class="input" style="font-size:28px;text-align:center" value="11"><span>–</span><input class="input" style="font-size:28px;text-align:center" value="8"></div></div>
+    <div class="notice">Sau khi xác nhận, đối thủ sẽ có cơ hội xác nhận. Chỉ khi kết quả được xác nhận mới trở thành kết quả chính thức.</div>
+    <button class="btn" style="margin-top:12px" onclick="confirmScore()">Xác nhận kết quả</button><div id="scoreOk" class="success hidden" style="margin-top:10px">✓ Kết quả đã được ghi nhận và đang chờ đối thủ xác nhận.</div>
+  </section>
+
+  <section id="rating" class="screen">
+    <button class="back" onclick="go('home')">‹ Trang chủ</button><h1>Rating của tôi</h1>
+    <div class="hero"><div class="muted" style="color:#eadfff">RATING HIỆN TẠI</div><div class="rating">1.247</div><div>+18 sau Saigon Amateur Open</div></div>
+    <h2>Lịch sử thay đổi</h2>
+    <div class="card"><div class="row"><b>Saigon Amateur Open</b><span style="color:var(--green)">+18</span></div><span class="muted">25/11/2027 · 1.229 → 1.247</span></div>
+    <div class="card"><div class="row"><b>Vũng Tàu Cup</b><span style="color:#c44">−12</span></div><span class="muted">12/11/2027 · 1.241 → 1.229</span></div>
+    <div class="card"><div class="row"><b>Hà Nội Open</b><span style="color:var(--green)">+22</span></div><span class="muted">05/11/2027 · 1.219 → 1.241</span></div>
+    <div class="notice">Rating trong prototype chỉ là dữ liệu minh họa. Thuật toán chính thức sẽ được chúng ta thiết kế và kiểm thử riêng.</div>
+  </section>
+
+  <section id="profile" class="screen">
+    <button class="back" onclick="go('home')">‹ Trang chủ</button><h1>Hồ sơ</h1>
+    <div class="card"><div class="person"><div class="avatar" style="width:56px;height:56px;font-size:20px">A</div><div><b>Nguyễn Văn A</b><div class="muted">PLAYER ID: PB-VN-001284</div></div></div></div>
+    <div class="grid"><div class="card"><b>1.247</b><br><span class="muted">Rating</span></div><div class="card"><b>48</b><br><span class="muted">Trận đấu</span></div><div class="card"><b>31</b><br><span class="muted">Thắng</span></div><div class="card"><b>17</b><br><span class="muted">Thua</span></div></div>
+    <div class="card"><b>Nguyên tắc tài khoản</b><p class="muted">Một người chơi · Một hồ sơ thi đấu · Một Player ID. Rating hình thành từ dữ liệu thi đấu.</p></div>
+  </section>
+
+  <nav class="bottom">
+    <button class="nav active" data-go="home" onclick="go('home')"><b>⌂</b>Trang chủ</button>
+    <button class="nav" data-go="events" onclick="go('events')"><b>🏆</b>Giải đấu</button>
+    <button class="nav" data-go="partners" onclick="go('partners')"><b>👥</b>Cộng đồng</button>
+    <button class="nav" data-go="profile" onclick="go('profile')"><b>◉</b>Cá nhân</button>
+  </nav>
+</div>
+<script>
+function go(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.go===id || (id==='home'&&n.dataset.go==='home')));
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function filterEvents(v){v=v.toLowerCase();document.querySelectorAll('.eventItem').forEach(x=>x.style.display=x.dataset.name.includes(v)?'block':'none')}
+function invite(btn){btn.textContent='Đã gửi lời mời ✓';btn.disabled=true}
+function confirmScore(){document.getElementById('scoreOk').classList.remove('hidden')}
+</script>
+</body>
+</html>
