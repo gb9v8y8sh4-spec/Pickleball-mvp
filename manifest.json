@@ -1,0 +1,9 @@
+{
+  "name": "Pickleball MVP v0.1",
+  "short_name": "Pickleball",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f6f3fb",
+  "theme_color": "#6d35c9",
+  "icons": []
+}
